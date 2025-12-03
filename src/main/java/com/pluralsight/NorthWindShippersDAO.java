@@ -29,13 +29,13 @@ public class NorthWindShippersDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public static void getAllShippers(BasicDataSource dataSource) {
         dataSource.setUrl("jdbc:mysql://localhost:3306/northwind");
         dataSource.setUsername("root");
         dataSource.setPassword("yearup");
+
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM shippers");
              ResultSet resultSet = preparedStatement.executeQuery();) {
@@ -47,7 +47,25 @@ public class NorthWindShippersDAO {
 
                 System.out.println("\nShipperId: " + shipperId + "\nCompany Name: " + name + "\nPhone: " + phone);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public static void updateShipper(BasicDataSource dataSource) {
+        dataSource.setUrl("jdbc:mysql://localhost:3306/northwind");
+        dataSource.setUsername("root");
+        dataSource.setPassword("yearup");
+        String newPhone = "111-111-1111";
+        int shipperId = 4;
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE shippers SET phone = ? WHERE shipperID = ?");) {
+
+            preparedStatement.setString(1, newPhone);
+            preparedStatement.setInt(2, 4);
+
+            int rows = preparedStatement.executeUpdate();
+            System.out.println("Updated record: " + rows);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

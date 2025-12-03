@@ -11,6 +11,7 @@ public class Main {
 
         BasicDataSource dataSource = new BasicDataSource();
 //      NorthWindShippersDAO.insertShipper(dataSource);
+        NorthWindShippersDAO.updateShipper(dataSource);
         NorthWindShippersDAO.getAllShippers(dataSource);
     }
 }
