@@ -10,10 +10,6 @@ import java.sql.SQLException;
 public class NorthWindShippersDAO {
 
     public static void insertShipper(BasicDataSource dataSource) {
-        dataSource.setUrl("jdbc:mysql://localhost:3306/northwind");
-        dataSource.setUsername("root");
-        dataSource.setPassword("yearup");
-
         //prompts
         String name = "Billion Company";
         String phone = "123-232-1231";
@@ -32,10 +28,6 @@ public class NorthWindShippersDAO {
     }
 
     public static void getAllShippers(BasicDataSource dataSource) {
-        dataSource.setUrl("jdbc:mysql://localhost:3306/northwind");
-        dataSource.setUsername("root");
-        dataSource.setPassword("yearup");
-
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM shippers");
              ResultSet resultSet = preparedStatement.executeQuery();) {
@@ -53,11 +45,9 @@ public class NorthWindShippersDAO {
     }
 
     public static void updateShipper(BasicDataSource dataSource) {
-        dataSource.setUrl("jdbc:mysql://localhost:3306/northwind");
-        dataSource.setUsername("root");
-        dataSource.setPassword("yearup");
         String newPhone = "111-111-1111";
         int shipperId = 4;
+
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("UPDATE shippers SET phone = ? WHERE shipperID = ?");) {
 
@@ -66,6 +56,18 @@ public class NorthWindShippersDAO {
 
             int rows = preparedStatement.executeUpdate();
             System.out.println("Updated record: " + rows);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void deleteShipper(BasicDataSource dataSource) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM shippers WHERE shipperId = ?");) {
+
+            preparedStatement.setInt(1, 4);
+            int rows = preparedStatement.executeUpdate();
+            System.out.println("Successfully Deleted row: " + rows);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
